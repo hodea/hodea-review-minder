@@ -1,0 +1,37 @@
+
+- Shall run on Linux and Windows
+    - take care about / vs \
+    - Note: all compilers I know so far support Unix path names also on
+      Windows, but not vice versa.
+      Example:
+        o #include <sys/syscall.h> also works on Windows
+      but
+        o #include <sys\syscall.h> fails on Linux
+    --> use Unix path internally if required
+
+
+- Shall support @lastreview to keep track on which files are reviewed.
+    - hash over file _AFTER_ updating review comments to detect if
+      file was modified after adding the @lastreview tag.
+
+
+Topics to consider
+------------------
+
+- What happens if a file is removed?
+- What happens if a file is renamed?
+- Shall languages using other comment style than C/C++ be supported?
+
+Software design
+---------------
+
+- Python module to handle configuration
+- hodea-rl-parse    # update review and @lastreview data base
+- hodea-rl-gen-html # generate html report
+- hodea-rl-gen-pdf  # generate pdf report
+
+Command line options:
+-t, --template file     # generate template configuration file
+-c, --config file       # configuration file to read
+-b, --database_dir path # path to the directory holding the review database
+-r, --report_dir        # path to the report output directory
