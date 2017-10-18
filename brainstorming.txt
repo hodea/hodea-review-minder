@@ -14,6 +14,15 @@
     - hash over file _AFTER_ updating review comments to detect if
       file was modified after adding the @lastreview tag.
 
+- Allow configuration to be either stored within the project which is
+  reviewed (i.e. within the git repository) or outside the project.
+- Allow database directory to be either part of the project or stored
+  outside the project.
+- Allow report directory to be either part of the project or stored
+  outside the project.
+- Storage place for configuration, database and report managed
+  independently via command line option.
+
 
 Topics to consider
 ------------------
@@ -29,9 +38,59 @@ Software design
 - hodea-rl-parse    # update review and @lastreview data base
 - hodea-rl-gen-html # generate html report
 - hodea-rl-gen-pdf  # generate pdf report
+- hodea-rl-info     # show info about the review status
 
 Command line options:
 -t, --template file     # generate template configuration file
 -c, --config file       # configuration file to read
 -b, --database_dir path # path to the directory holding the review database
 -r, --report_dir        # path to the report output directory
+-f, --ofile             # output file name for the report
+-v, --version           # print version information
+
+hodea-rl-info
+-------------
+
+- prints information about the status of the review to the console (stdout).
+- used at command line.
+
+usage: hodea-rl-info [options] [file]
+
+Command line options in addition to the above:
+
+-m, --modified  # list files modified since last review, including the
+                # date of last review.
+-d, --date file # print the review or creation date of the given file
+                # together with its filename.
+
+Without options it should give an overview on all files: unreviewed,
+reviewed and modified science last review.
+
+Example:
+
+$ hodea-rl-info
+
+Shall print:
+
+@{yyyy-mm-dd} main.c    N
+@{yyyy-mm-dd} foo.c     R
+@{yyyy-mm-dd} bar.c     M
+
+With N for new, R for reviewed, and M for modified science review.
+yyyy-mm-dd is the date of the last review, or the creation date of the
+file as provided by the file system.
+
+The option -d shall function is interface to git.
+
+Example:
+
+$ hodea-rl-info -d bar.c
+
+shall print:
+
+@{yyyy-mm-dd} bar.c
+
+This can be used with git to show the differences of that file since this
+date:
+
+$ git diff `hodea-rl-info -d bar.c`
