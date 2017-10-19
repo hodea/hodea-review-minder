@@ -23,6 +23,7 @@
 - Storage place for configuration, database and report managed
   independently via command line option.
 
+- Add field for name who reported an issue.
 
 Topics to consider
 ------------------
