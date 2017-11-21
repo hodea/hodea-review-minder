@@ -38,8 +38,8 @@ class minder_db:
     def __init__(self, topdir):
         self.dbdir = topdir + r'/review_minder/minder.db'
     
-        if not (os.path.isdir(topdir + r'\review')):
-            os.mkdir(topdir + r'\review')
+        if not (os.path.isdir(topdir + r'\review_minder')):
+            os.mkdir(topdir + r'\review_minder')
         if not (os.path.exists(self.dbdir)):
             flog = open(self.dbdir, 'w')   
             flog.write(jsonbody) 
@@ -55,21 +55,21 @@ class minder_db:
         flog.close
        
         try:
-            self.Minderdict = json.loads(jvar)
+            Minderdict = json.loads(jvar)
         except:
             print("ERROR: Cannot read the database file. Empty?")
             return None
         try:
-            self.Minderdict['minder_overview'][0]['items_open']
-            self.Minderdict['minder_overview'][0]['items_closed']
-            self.Minderdict['minder_overview'][0]['items_rejected']
-            self.Minderdict['minder_overview'][1]['items_comment']
-            self.Minderdict['minder_overview'][1]['items_major']
-            self.Minderdict['minder_overview'][1]['items_minor']
-            self.Minderdict['minder_overview'][1]['items_undefined']
-            self.Minderdict['minder_items']
+            Minderdict['minder_overview'][0]['items_open']
+            Minderdict['minder_overview'][0]['items_closed']
+            Minderdict['minder_overview'][0]['items_rejected']
+            Minderdict['minder_overview'][1]['items_comment']
+            Minderdict['minder_overview'][1]['items_major']
+            Minderdict['minder_overview'][1]['items_minor']
+            Minderdict['minder_overview'][1]['items_undefined']
+            Minderdict['minder_items']
         except:
             print("ERROR: One or more database keywords has been changed.")
             return None
-        return self.Minderdict
+        return Minderdict
         

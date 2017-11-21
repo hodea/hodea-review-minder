@@ -10,7 +10,7 @@ __version__ ="0.0.1 Alpha"
 
 import argparse
 import os
-from minder_config import Getconfig 
+from minder_config import minder_cfg 
 from minder_database import minder_db
 
     
@@ -77,11 +77,27 @@ def hodea_rm_parse():
         topdir = '.'
     print('top-dir:  '+topdir)
     
-    minder_cfg = Getconfig(topdir)
-    if minder_cfg is None:
+    config = minder_cfg(topdir)
+    cfg_name = config.read_config(configname='name')
+    cfg_type = config.read_config(configname='filetype')
+    cfg_exclude = config.read_config(configname='exclude')
+    if cfg_name is None or cfg_type is None or cfg_exclude is None:
         print("ERROR: Stopping  minder! Please correct errors before proceeding.")
         return 
+#Debug print; TODO remove
+    print("*****DEBUG:cfg name")
+    print(cfg_name)
+    print("*****")
+    print("*****DEBUG:cfg type")
+    print(cfg_type)
+    print("*****")
+    print("*****DEBUG:cfg exclude")
+    print(cfg_exclude) 
+    print("*****")
+#Debug End
+    
     print("read config:     OK")
+    
     
     minder_dict = minder_db(topdir)
     dict = minder_dict.Getdb()
@@ -90,8 +106,10 @@ def hodea_rm_parse():
         return 
     print("read database:   OK")
 #Debug print; TODO remove
+    print("*****DEBUG:")
     print(dict)
-
+    print("*****")
+#Debug End
             
         
     
