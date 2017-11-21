@@ -27,55 +27,49 @@ jsonbody ='''{
 }'''
 
 
-########################################################
-# Function: 
-# read database
-######################################################## 
-def read_db(dbdir):
-    
-
-    jvar = ""
-    
-    flog = open(dbdir, 'r')
-    for line in flog:
-        jvar = jvar + line 
-
-    flog.close
    
-    try:
-        Minderdict = json.loads(jvar)
-    except:
-        print("ERROR: Cannot read the database file. Empty?")
-        return None
-    try:
-        Minderdict['minder_overview'][0]['items_open']
-        Minderdict['minder_overview'][0]['items_closed']
-        Minderdict['minder_overview'][0]['items_rejected']
-        Minderdict['minder_overview'][1]['items_comment']
-        Minderdict['minder_overview'][1]['items_major']
-        Minderdict['minder_overview'][1]['items_minor']
-        Minderdict['minder_overview'][1]['items_undefined']
-        Minderdict['minder_items']
-    except:
-        print("ERROR: One or more database keywords has been changed.")
-        return None
-    return Minderdict
-    
 ########################################################
 # Function: 
 # create database if not availeable 
 # and call read database
 ########################################################                
-def Getdb(topdir):
+class minder_db:
+    
+    def __init__(self, topdir):
+        self.dbdir = topdir + r'/review_minder/minder.db'
+    
+        if not (os.path.isdir(topdir + r'\review')):
+            os.mkdir(topdir + r'\review')
+        if not (os.path.exists(self.dbdir)):
+            flog = open(self.dbdir, 'w')   
+            flog.write(jsonbody) 
+            flog.close() 
+        
+    def Getdb(self):
 
-
-    dbdir = topdir + r'/review_minder/minder.db'
-
-    if not (os.path.isdir(topdir + r'\review')):
-        os.mkdir(topdir + r'\review')
-    if not (os.path.exists(dbdir)):
-        flog = open(dbdir, 'w')   
-        flog.write(jsonbody) 
-        flog.close()  
-         
-    return read_db(dbdir)
+        jvar = ""
+        
+        flog = open(self.dbdir, 'r')
+        for line in flog:
+            jvar = jvar + line     
+        flog.close
+       
+        try:
+            self.Minderdict = json.loads(jvar)
+        except:
+            print("ERROR: Cannot read the database file. Empty?")
+            return None
+        try:
+            self.Minderdict['minder_overview'][0]['items_open']
+            self.Minderdict['minder_overview'][0]['items_closed']
+            self.Minderdict['minder_overview'][0]['items_rejected']
+            self.Minderdict['minder_overview'][1]['items_comment']
+            self.Minderdict['minder_overview'][1]['items_major']
+            self.Minderdict['minder_overview'][1]['items_minor']
+            self.Minderdict['minder_overview'][1]['items_undefined']
+            self.Minderdict['minder_items']
+        except:
+            print("ERROR: One or more database keywords has been changed.")
+            return None
+        return self.Minderdict
+        

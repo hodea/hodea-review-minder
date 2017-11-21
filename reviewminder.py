@@ -11,7 +11,7 @@ __version__ ="0.0.1 Alpha"
 import argparse
 import os
 from minder_config import Getconfig 
-from minder_database import Getdb
+from minder_database import minder_db
 
     
 ########################################################
@@ -66,7 +66,7 @@ def parse_cmdline():
 # Global calls on start execution
 ########################################################                    
 # Start the walk
-def minder():
+def hodea_rm_parse():
 
     
     args = parse_cmdline()  
@@ -83,13 +83,14 @@ def minder():
         return 
     print("read config:     OK")
     
-    minder_dict = Getdb(topdir)
-    if minder_dict is None:
+    minder_dict = minder_db(topdir)
+    dict = minder_dict.Getdb()
+    if dict is None:
         print("ERROR: Stopping  minder! Please correct errors before proceeding.")
         return 
     print("read database:   OK")
 #Debug print; TODO remove
-    print(minder_dict)
+    print(dict)
 
             
         
@@ -103,4 +104,4 @@ def minder():
     #if r'true' in args.verbose.lower():
     #    raw_input("\n\npress enter to exit")   
     
-minder()
+hodea_rm_parse()
