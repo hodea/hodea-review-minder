@@ -12,7 +12,7 @@ import argparse
 import os
 from minder_config import minder_cfg 
 from minder_database import minder_db
-from itertools import product
+
 
     
 ########################################################
