@@ -12,6 +12,7 @@ import argparse
 import os
 from minder_config import minder_cfg 
 from minder_database import minder_db
+from itertools import product
 
     
 ########################################################
@@ -66,8 +67,71 @@ def parse_cmdline():
 # Global calls on start execution
 ########################################################                    
 # Start the walk
-def hodea_rm_parse():
+class hodea_review_minder:
 
+    
+    def __init__(self, topdir):
+        
+        self.topdir = topdir
+        
+        try:
+            config = minder_cfg(self.topdir)
+            self.cfg_name = config.read_config(configname='name')
+            self.cfg_type = config.read_config(configname='filetype')
+            self.cfg_exclude = config.read_config(configname='exclude')
+        except:
+            raise Exception 
+    #Debug print; TODO remove
+        print("*****DEBUG:cfg name")
+        print(self.cfg_name)
+        print("*****")
+        print("*****DEBUG:cfg type")
+        print(self.cfg_type)
+        print("*****")
+        print("*****DEBUG:cfg exclude")
+        print(self.cfg_exclude) 
+        print("*****")
+    #Debug End
+        
+        print("read config:     OK")
+        
+        
+        try:
+            minder_dict = minder_db(self.topdir)
+            self.dict = minder_dict.Getdb()
+        except:
+            raise Exception
+        print("read database:   OK")
+    #Debug print; TODO remove
+        print("*****DEBUG:")
+        print(self.dict)
+        print("*****")
+    #Debug End
+        
+    def rm_access_check(self, Exception):
+        
+        for root, dirs, files in os.walk(self.topdir):
+            for name in files:
+                find = False
+                for i in range(0,len(self.cfg_exclude)):
+                    if self.cfg_exclude[i] in os.path.join(root, name):
+                        find = True
+                if find is True:
+                    continue
+                for j in range(0,len(self.cfg_type)): 
+                    if name.lower().endswith(self.cfg_type[j]):
+                        print(os.path.join(root, name))
+                        try:
+                            flog = open(os.path.join(root, name), "rb")
+                            flog.close()  
+                            flog = open(os.path.join(root, name), 'r+')  
+                            flog.close() 
+                        except:
+                            print("ERROR: No Access to: " + os.path.join(root, name))
+                            raise Exception
+
+
+def main():
     
     args = parse_cmdline()  
     # use other source than default
@@ -76,50 +140,17 @@ def hodea_rm_parse():
     else:
         topdir = '.'
     print('top-dir:  '+topdir)
-    
-    config = minder_cfg(topdir)
-    cfg_name = config.read_config(configname='name')
-    cfg_type = config.read_config(configname='filetype')
-    cfg_exclude = config.read_config(configname='exclude')
-    if cfg_name is None or cfg_type is None or cfg_exclude is None:
-        print("ERROR: Stopping  minder! Please correct errors before proceeding.")
-        return 
-#Debug print; TODO remove
-    print("*****DEBUG:cfg name")
-    print(cfg_name)
-    print("*****")
-    print("*****DEBUG:cfg type")
-    print(cfg_type)
-    print("*****")
-    print("*****DEBUG:cfg exclude")
-    print(cfg_exclude) 
-    print("*****")
-#Debug End
-    
-    print("read config:     OK")
-    
-    
-    minder_dict = minder_db(topdir)
-    dict = minder_dict.Getdb()
-    if dict is None:
-        print("ERROR: Stopping  minder! Please correct errors before proceeding.")
-        return 
-    print("read database:   OK")
-#Debug print; TODO remove
-    print("*****DEBUG:")
-    print(dict)
-    print("*****")
-#Debug End
-            
         
+    try:
+        minder = hodea_review_minder(topdir)
+    except:
+        print("Init ERROR: Stopping  minder! Please correct errors before proceeding.")
+        return
     
+    try:
+        minder.rm_access_check(Exception)
+    except:
+        print("Access ERROR: Stopping  minder! Please correct errors before proceeding.")
+        return
     
-    #create html report out of database
-    #if r'true' in args.htmlreport.lower(): 
-    #    create_html_report()  
-    
-    #keep command line open
-    #if r'true' in args.verbose.lower():
-    #    raw_input("\n\npress enter to exit")   
-    
-hodea_rm_parse()
+main()

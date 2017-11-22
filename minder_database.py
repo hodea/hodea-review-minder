@@ -70,6 +70,6 @@ class minder_db:
             Minderdict['minder_items']
         except:
             print("ERROR: One or more database keywords has been changed.")
-            return None
+            raise Exception
         return Minderdict
         

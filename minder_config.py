@@ -6,6 +6,7 @@ Created on Mon Nov 20 19:27:05 2017
 """
 import os
 from configparser import ConfigParser
+import re
 
 configtemplate = '''# hodea review minder cfg file
 
@@ -34,7 +35,9 @@ exclude =  ./review_minder
 
 '''
   
-    
+delimiters = "\n", ";", ","
+regexPattern = '|'.join(map(re.escape, delimiters))
+ 
 ########################################################
 # Function: 
 # create config if not availeable and call read database
@@ -56,16 +59,19 @@ class minder_cfg:
         
         config = ConfigParser()
         flog = open(self.configdir, 'rb')
-        config.read(self.configdir)
+        try:
+            config.read(self.configdir)
+        except:
+            print("ERROR: Please use Intentions for multiline options in your minder.cfg file.")
+            raise Exception
+        flog.close()
         try:    
             config['minder_cfg'][configname]
         except:
             print("ERROR: Can't find configuration keyword '" + configname +"'")
-            flog.close()
-            return None
+            raise Exception
 
-        flog.close()
-        return config['minder_cfg'][configname]
+        return re.split(regexPattern,config['minder_cfg'][configname].replace('/','\\'))
 
 
     
