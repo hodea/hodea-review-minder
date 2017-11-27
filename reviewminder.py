@@ -61,7 +61,29 @@ def parse_cmdline():
     args = parser.parse_args()
     return args
 
-
+class rm_handle_entry:
+    
+    def __init__(self,entry):
+        self.entry = entry
+        if not any("rm_id_" in s.lower() for s in self.entry):
+            print('new')
+        else:
+            matching = [s for s in self.entry if "rm_id_" in s.lower()] 
+            print(matching[0].lower().rstrip('\r\n').split('_')[2]) #:=ID
+        
+class rm_check_line:
+    
+    def __init__(self, line):
+        self.line = str(line.rstrip(bytes(os.linesep,'utf-8')))
+        
+# find used end of line format
+        
+    def get_entry(self):
+        if r'/*todo:review' in self.line.lower().replace(' ',''):
+            return self.line.lower().replace(' ','').split(':')
+        else:
+            return False
+            
 
 ########################################################
 # Global calls on start execution
@@ -108,7 +130,7 @@ class hodea_review_minder:
         print("*****")
     #Debug End
         
-    def rm_access_check(self, Exception):
+    def rm_access_check(self):
         
         for root, dirs, files in os.walk(self.topdir):
             for name in files:
@@ -120,7 +142,6 @@ class hodea_review_minder:
                     continue
                 for j in range(0,len(self.cfg_type)): 
                     if name.lower().endswith(self.cfg_type[j]):
-                        print(os.path.join(root, name))
                         try:
                             flog = open(os.path.join(root, name), "rb")
                             flog.close()  
@@ -129,6 +150,34 @@ class hodea_review_minder:
                         except:
                             print("ERROR: No Access to: " + os.path.join(root, name))
                             raise Exception
+                            
+    def rm_search(self):
+        for root, dirs, files in os.walk(self.topdir):
+            for name in files:
+                find = False
+                for i in range(0,len(self.cfg_exclude)):
+                    if self.cfg_exclude[i] in os.path.join(root, name):
+                        find = True
+                if find is True:
+                    continue
+                for j in range(0,len(self.cfg_type)): 
+                    if name.lower().endswith(self.cfg_type[j]):
+                        print(os.path.join(root, name))
+                        flog = open(os.path.join(root, name), "rb")
+                        for line in flog:
+                            try:
+                                currentline = rm_check_line(line)
+                                entry = currentline.get_entry()
+                                if entry is not False:
+                                    entry_handler = rm_handle_entry(entry)
+                            except:
+                                print("ERROR: Parsing Error")
+                                raise Exception
+                            
+                                
+                                
+                             
+                            
 
 
 def main():
@@ -148,9 +197,16 @@ def main():
         return
     
     try:
-        minder.rm_access_check(Exception)
+        minder.rm_access_check()
     except:
         print("Access ERROR: Stopping  minder! Please correct errors before proceeding.")
         return
+    
+    try:
+        minder.rm_search()
+    except:
+        print("Parsing ERROR: Stopping  minder! Please correct errors before proceeding.")
+        return
+
     
 main()
