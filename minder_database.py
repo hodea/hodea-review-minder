@@ -72,4 +72,9 @@ class minder_db:
             print("ERROR: One or more database keywords has been changed.")
             raise Exception
         return Minderdict
+    def Setdb(self, newdict):
+
+        flog = open(self.dbdir, 'w')    
+        flog.write(json.dumps(newdict,sort_keys=True,indent=0,separators=(',',': ')))
+        flog.close  
         

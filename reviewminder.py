@@ -12,6 +12,9 @@ import argparse
 import os
 from minder_config import minder_cfg 
 from minder_database import minder_db
+import time
+import hashlib
+import uuid
 
 
     
@@ -61,15 +64,55 @@ def parse_cmdline():
     args = parser.parse_args()
     return args
 
+
+
+
 class rm_handle_entry:
     
-    def __init__(self,entry):
+    def __init__(self,entry, rm_db, filename):
         self.entry = entry
+        find = False
+
         if not any("rm_id_" in s.lower() for s in self.entry):
-            print('new')
+#Debug print; TODO remove
+            print('found new item no id')
+            self.new_entry(rm_db, filename)
         else:
             matching = [s for s in self.entry if "rm_id_" in s.lower()] 
-            print(matching[0].lower().rstrip('\r\n').split('_')[2]) #:=ID
+            self.rm_id = matching[0].lower().rstrip('\r\n').split('___')[1].rstrip("'") 
+            p = len(rm_db['minder_items'])
+            if(p):                                     #if log empty, the next found id must be new
+                for i in range(0,p):
+                    if (self.rm_id in rm_db['minder_items'][i]['ID']): 
+#Debug print; TODO remove
+                        print("found existing item ")
+                        find = True
+                    #update comment here
+                if not find:
+                        print(self.rm_id)
+                        print("found new item not existing id")
+                        self.new_entry(rm_db, filename)
+            else:
+#Debug print; TODO remove
+                print("found new item no ids exist so far")
+                self.new_entry(rm_db, filename)
+
+    def new_entry(self, rm_db, filename):
+        salt = uuid.uuid4().hex
+        hash_object = hashlib.sha1(salt.encode('utf-8'))
+        new_ID = ('RM_ID_%d___'+hash_object.hexdigest()) %len(rm_db['minder_items'])
+        rm_db['minder_items'].append({'ID':new_ID,\
+                                     'status':'Open',\
+                                     'opendate':time.strftime("%d/%m/%Y"),\
+                                     'closedate':' ',\
+                                     'file':filename})
+        #print(rm_db['minder_items'])
+
+        #print(rm_db['minder_items'])
+        #m_db['minder_items'] + {'ID':self.rm_id}
+        #print(rm_db)
+        
+        
         
 class rm_check_line:
     
@@ -83,6 +126,7 @@ class rm_check_line:
             return self.line.lower().replace(' ','').split(':')
         else:
             return False
+
             
 
 ########################################################
@@ -119,8 +163,8 @@ class hodea_review_minder:
         
         
         try:
-            minder_dict = minder_db(self.topdir)
-            self.dict = minder_dict.Getdb()
+            self.minder_dict = minder_db(self.topdir)
+            self.dict = self.minder_dict.Getdb()
         except:
             raise Exception
         print("read database:   OK")
@@ -164,15 +208,17 @@ class hodea_review_minder:
                     if name.lower().endswith(self.cfg_type[j]):
                         print(os.path.join(root, name))
                         flog = open(os.path.join(root, name), "rb")
-                        for line in flog:
-                            try:
-                                currentline = rm_check_line(line)
-                                entry = currentline.get_entry()
-                                if entry is not False:
-                                    entry_handler = rm_handle_entry(entry)
-                            except:
-                                print("ERROR: Parsing Error")
-                                raise Exception
+                        for line in flog:           #add write new file here + add hash before writing new file
+                            #try:
+                            currentline = rm_check_line(line)
+                            entry = currentline.get_entry()
+                            if entry is not False:
+                                entry_handler = rm_handle_entry(entry, self.dict, name)
+                            #except:
+                            #    print("ERROR: Parsing Error")
+                            #    raise Exception
+    def rm_setdb(self):
+         self.minder_dict.Setdb(self.dict)
                             
                                 
                                 
@@ -202,11 +248,13 @@ def main():
         print("Access ERROR: Stopping  minder! Please correct errors before proceeding.")
         return
     
-    try:
-        minder.rm_search()
-    except:
-        print("Parsing ERROR: Stopping  minder! Please correct errors before proceeding.")
-        return
+    #try:
+    minder.rm_search()
+    minder.rm_setdb()
+ 
+   # except:
+     #   print("Parsing ERROR: Stopping  minder! Please correct errors before proceeding.")
+    #    return
 
     
 main()
