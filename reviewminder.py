@@ -69,14 +69,16 @@ def parse_cmdline():
 
 class rm_handle_entry:
     
-    def __init__(self,entry, rm_db, filename):
+    def __init__(self,entry):
         self.entry = entry
+        
+    def get_entry_status(self, flog, rm_db, filename):
         find = False
 
         if not any("rm_id_" in s.lower() for s in self.entry):
 #Debug print; TODO remove
             print('found new item no id')
-            self.new_entry(rm_db, filename)
+            return  self.new_entry(flog, rm_db, filename)
         else:
             matching = [s for s in self.entry if "rm_id_" in s.lower()] 
             self.rm_id = matching[0].lower().rstrip('\r\n').split('___')[1].rstrip("'") 
@@ -86,18 +88,20 @@ class rm_handle_entry:
                     if (self.rm_id in rm_db['minder_items'][i]['ID']): 
 #Debug print; TODO remove
                         print("found existing item ")
+                        return self.existing_entry(i, flog, rm_db, filename)
                         find = True
                     #update comment here
                 if not find:
                         print(self.rm_id)
                         print("found new item not existing id")
-                        self.new_entry(rm_db, filename)
+                        return self.new_entry(flog, rm_db, filename)
             else:
 #Debug print; TODO remove
                 print("found new item no ids exist so far")
-                self.new_entry(rm_db, filename)
+                return self.new_entry(flog, rm_db, filename)
 
-    def new_entry(self, rm_db, filename):
+    def new_entry(self, flog, rm_db, filename):
+        comment = ''
         salt = uuid.uuid4().hex
         hash_object = hashlib.sha1(salt.encode('utf-8'))
         new_ID = ('RM_ID_%d___'+hash_object.hexdigest()) %len(rm_db['minder_items'])
@@ -106,6 +110,32 @@ class rm_handle_entry:
                                      'opendate':time.strftime("%d/%m/%Y"),\
                                      'closedate':' ',\
                                      'file':filename})
+        while True:
+            nextline = next(flog)
+            if "*/" not in nextline:
+                comment = comment + nextline.lstrip('*')
+            else:
+                break
+        p = len(rm_db['minder_items']) - 1
+        rm_db['minder_items'][p]['comment'] = comment
+        return p
+
+            
+    def existing_entry(self,p, flog, rm_db, filename):
+        comment = ''
+        while True:
+            nextline = next(flog)
+            if "*/" not in nextline:
+                comment = comment + nextline.lstrip('*')
+            else:
+                break
+        rm_db['minder_items'][p]['comment'] = comment
+        return p
+
+            
+            
+            
+        
         #print(rm_db['minder_items'])
 
         #print(rm_db['minder_items'])
@@ -117,7 +147,7 @@ class rm_handle_entry:
 class rm_check_line:
     
     def __init__(self, line):
-        self.line = str(line.rstrip(bytes(os.linesep,'utf-8')))
+        self.line = str(line.rstrip(os.linesep))
         
 # find used end of line format
         
@@ -207,16 +237,27 @@ class hodea_review_minder:
                 for j in range(0,len(self.cfg_type)): 
                     if name.lower().endswith(self.cfg_type[j]):
                         print(os.path.join(root, name))
-                        flog = open(os.path.join(root, name), "rb")
+                        flog = open(os.path.join(root, name), "r")
+                        newfile = ''
                         for line in flog:           #add write new file here + add hash before writing new file
                             #try:
                             currentline = rm_check_line(line)
                             entry = currentline.get_entry()
                             if entry is not False:
-                                entry_handler = rm_handle_entry(entry, self.dict, name)
-                            #except:
-                            #    print("ERROR: Parsing Error")
-                            #    raise Exception
+                                entry_handler = rm_handle_entry(entry)
+                                p = entry_handler.get_entry_status(flog, self.dict, name)
+                                newfile = newfile + '/*TODO:review:STATUS:' + \
+                                    self.dict['minder_items'][p]['status'] + ':' +\
+                                    self.dict['minder_items'][p]['ID'] + '\n' + \
+                                    self.dict['minder_items'][p]['comment'] + '*/\n' 
+
+                            else:
+                                newfile = newfile + line
+                        flog.close()
+                        flog = open(os.path.join(root, name), "w")
+                        flog.write(newfile)
+                        flog.close()
+
     def rm_setdb(self):
          self.minder_dict.Setdb(self.dict)
                             
