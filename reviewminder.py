@@ -5,7 +5,7 @@ Created on Mon Nov 20 19:22:12 2017
 @author: Daniel
 """
 
-__status__ = "Beta-Test"
+__status__ = "Development"
 __version__ ="0.0.1 Alpha"
 
 import argparse
@@ -16,7 +16,8 @@ import time
 import hashlib
 import uuid
 
-
+sup_status = ['open','closed','rejected']
+sup_severity = ['major','minor','warning','undefined']
     
 ########################################################
 # Function: 
@@ -68,6 +69,7 @@ def parse_cmdline():
 
 
 class rm_handle_entry:
+     
     
     def __init__(self,entry):
         self.entry = entry
@@ -82,6 +84,14 @@ class rm_handle_entry:
         else:
             matching = [s for s in self.entry if "rm_id_" in s.lower()] 
             self.rm_id = matching[0].lower().rstrip('\r\n').split('___')[1].rstrip("'") 
+            print(len(sup_status))
+            for i in range(0,len(sup_status)):
+                if [s for s in self.entry if sup_status[i] in s.lower()] :
+                    print(sup_status[i])
+                    self.status = sup_status[i]
+
+
+
             p = len(rm_db['minder_items'])
             if(p):                                     #if log empty, the next found id must be new
                 for i in range(0,p):
@@ -106,14 +116,14 @@ class rm_handle_entry:
         hash_object = hashlib.sha1(salt.encode('utf-8'))
         new_ID = ('RM_ID_%d___'+hash_object.hexdigest()) %len(rm_db['minder_items'])
         rm_db['minder_items'].append({'ID':new_ID,\
-                                     'status':'Open',\
+                                     'status':sup_status[0],\
                                      'opendate':time.strftime("%d/%m/%Y"),\
                                      'closedate':' ',\
                                      'file':filename})
         while True:
             nextline = next(flog)
             if "*/" not in nextline:
-                comment = comment + nextline.lstrip('*')
+                comment = comment + nextline.lstrip(' ')
             else:
                 break
         p = len(rm_db['minder_items']) - 1
@@ -126,10 +136,11 @@ class rm_handle_entry:
         while True:
             nextline = next(flog)
             if "*/" not in nextline:
-                comment = comment + nextline.lstrip('*')
+                comment = comment + nextline.lstrip(' ')
             else:
                 break
         rm_db['minder_items'][p]['comment'] = comment
+        rm_db['minder_items'][p]['status'] = self.status
         return p
 
             
@@ -246,10 +257,11 @@ class hodea_review_minder:
                             if entry is not False:
                                 entry_handler = rm_handle_entry(entry)
                                 p = entry_handler.get_entry_status(flog, self.dict, name)
-                                newfile = newfile + '/*TODO:review:STATUS:' + \
-                                    self.dict['minder_items'][p]['status'] + ':' +\
-                                    self.dict['minder_items'][p]['ID'] + '\n' + \
-                                    self.dict['minder_items'][p]['comment'] + '*/\n' 
+                                if self.dict['minder_items'][p]['status'] is sup_status[0]:
+                                    newfile = newfile + '/*TODO:review:STATUS:' + \
+                                        self.dict['minder_items'][p]['status'] + ':' +\
+                                        self.dict['minder_items'][p]['ID'] + '\n' + \
+                                        self.dict['minder_items'][p]['comment'] + '*/\n' 
 
                             else:
                                 newfile = newfile + line
