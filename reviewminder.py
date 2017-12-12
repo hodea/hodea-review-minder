@@ -17,7 +17,7 @@ import hashlib
 import uuid
 
 sup_status = ['open','closed','rejected']
-sup_severity = ['major','minor','warning','undefined']
+sup_severity = ['major','minor','warning']
     
 ########################################################
 # Function: 
@@ -73,41 +73,38 @@ class rm_handle_entry:
     
     def __init__(self,entry):
         self.entry = entry
+
         
     def get_entry_status(self, flog, rm_db, filename):
         find = False
-
+        severityfound = False
+        statusfound = False
+        for i in range(0,len(sup_severity)):
+            if [s for s in self.entry if sup_severity[i] in s.lower()] :
+                self.severity = sup_severity[i]
+                severityfound = True
+        if not severityfound:
+            self.severity = 'undefined'
         if not any("rm_id_" in s.lower() for s in self.entry):
-#Debug print; TODO remove
-            print('found new item no id')
             return  self.new_entry(flog, rm_db, filename)
         else:
             matching = [s for s in self.entry if "rm_id_" in s.lower()] 
             self.rm_id = matching[0].lower().rstrip('\r\n').split('___')[1].rstrip("'") 
-            print(len(sup_status))
             for i in range(0,len(sup_status)):
                 if [s for s in self.entry if sup_status[i] in s.lower()] :
-                    print(sup_status[i])
                     self.status = sup_status[i]
-
-
-
+                    statusfound = True
+            if not statusfound:
+                self.status = 'open'
             p = len(rm_db['minder_items'])
             if(p):                                     #if log empty, the next found id must be new
                 for i in range(0,p):
                     if (self.rm_id in rm_db['minder_items'][i]['ID']): 
-#Debug print; TODO remove
-                        print("found existing item ")
                         return self.existing_entry(i, flog, rm_db, filename)
                         find = True
-                    #update comment here
                 if not find:
-                        print(self.rm_id)
-                        print("found new item not existing id")
                         return self.new_entry(flog, rm_db, filename)
             else:
-#Debug print; TODO remove
-                print("found new item no ids exist so far")
                 return self.new_entry(flog, rm_db, filename)
 
     def new_entry(self, flog, rm_db, filename):
@@ -117,6 +114,7 @@ class rm_handle_entry:
         new_ID = ('RM_ID_%d___'+hash_object.hexdigest()) %len(rm_db['minder_items'])
         rm_db['minder_items'].append({'ID':new_ID,\
                                      'status':sup_status[0],\
+                                     'severity':self.severity,\
                                      'opendate':time.strftime("%d/%m/%Y"),\
                                      'closedate':' ',\
                                      'file':filename})
@@ -141,18 +139,10 @@ class rm_handle_entry:
                 break
         rm_db['minder_items'][p]['comment'] = comment
         rm_db['minder_items'][p]['status'] = self.status
+        rm_db['minder_items'][p]['severity'] = self.severity
         return p
 
-            
-            
-            
-        
-        #print(rm_db['minder_items'])
 
-        #print(rm_db['minder_items'])
-        #m_db['minder_items'] + {'ID':self.rm_id}
-        #print(rm_db)
-        
         
         
 class rm_check_line:
@@ -260,8 +250,11 @@ class hodea_review_minder:
                                 if self.dict['minder_items'][p]['status'] is sup_status[0]:
                                     newfile = newfile + '/*TODO:review:STATUS:' + \
                                         self.dict['minder_items'][p]['status'] + ':' +\
+                                        self.dict['minder_items'][p]['severity'] + ':' +\
                                         self.dict['minder_items'][p]['ID'] + '\n' + \
                                         self.dict['minder_items'][p]['comment'] + '*/\n' 
+                                else:
+                                    self.dict['minder_items'][p]['closedate'] = time.strftime("%d/%m/%Y")
 
                             else:
                                 newfile = newfile + line
