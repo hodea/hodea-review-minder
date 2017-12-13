@@ -76,7 +76,7 @@ class rm_handle_entry:
 
         
     def get_entry_status(self, flog, rm_db, filename):
-        find = False
+        idfound = False
         severityfound = False
         statusfound = False
         for i in range(0,len(sup_severity)):
@@ -95,14 +95,14 @@ class rm_handle_entry:
                     self.status = sup_status[i]
                     statusfound = True
             if not statusfound:
-                self.status = 'open'
+                self.status = sup_status[0]
             p = len(rm_db['minder_items'])
             if(p):                                     #if log empty, the next found id must be new
                 for i in range(0,p):
                     if (self.rm_id in rm_db['minder_items'][i]['ID']): 
                         return self.existing_entry(i, flog, rm_db, filename)
-                        find = True
-                if not find:
+                        idfound = True
+                if not idfound:
                         return self.new_entry(flog, rm_db, filename)
             else:
                 return self.new_entry(flog, rm_db, filename)
@@ -196,6 +196,12 @@ class hodea_review_minder:
         try:
             self.minder_dict = minder_db(self.topdir)
             self.dict = self.minder_dict.Getdb()
+            #get all IDs from list
+            if self.dict['minder_items']:
+                self.IDlist = []
+                for i in range(0,len(self.dict['minder_items'])):
+                    self.IDlist.append(self.dict['minder_items'][i]['ID'])
+
         except:
             raise Exception
         print("read database:   OK")
@@ -247,6 +253,9 @@ class hodea_review_minder:
                             if entry is not False:
                                 entry_handler = rm_handle_entry(entry)
                                 p = entry_handler.get_entry_status(flog, self.dict, name)
+                                #remove found IDs from found list - all left on list are deleted in file and needs to be closed
+                                self.IDlist.remove(self.dict['minder_items'][p]['ID'])
+                                #if status open
                                 if self.dict['minder_items'][p]['status'] is sup_status[0]:
                                     newfile = newfile + '/*TODO:review:STATUS:' + \
                                         self.dict['minder_items'][p]['status'] + ':' +\
@@ -262,6 +271,15 @@ class hodea_review_minder:
                         flog = open(os.path.join(root, name), "w")
                         flog.write(newfile)
                         flog.close()
+        #close all IDs which are no more in code
+        if self.dict['minder_items']:
+            for i in range(0,len(self.dict['minder_items'])):
+                if self.dict['minder_items'][i]['status'].rstrip('') == r'open':                
+                    if self.dict['minder_items'][i]['ID'] in self.IDlist:
+                        self.dict['minder_items'][i]['status'] = sup_status[1]
+
+                
+                    
 
     def rm_setdb(self):
          self.minder_dict.Setdb(self.dict)
@@ -280,7 +298,7 @@ def main():
         topdir = args.path.replace('\\','/')
     else:
         topdir = '.'
-    print('top-dir:  '+topdir)
+    print('top-dir:  '+ topdir)
         
     try:
         minder = hodea_review_minder(topdir)
