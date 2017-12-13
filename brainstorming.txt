@@ -40,6 +40,8 @@ Topics to consider
 	- does not matter - review minder works ID dependant, not file name dependant - expecting unique IDs for each review item
 - Shall languages using other comment style than C/C++ be supported?
 	- yes, but for a future version
+- What happens if files, including existing IDs, will be copied from a project to another
+    - IDs which are not found in the db file will be considered as new review items
 
 Software design
 ---------------
