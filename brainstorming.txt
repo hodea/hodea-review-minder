@@ -13,24 +13,33 @@
 - Shall support @lastreview to keep track on which files are reviewed.
     - hash over file _AFTER_ updating review comments to detect if
       file was modified after adding the @lastreview tag.
+    - update hash if lastreview date got updated or a keyword (tbd) is used - tbd
 
 - Allow configuration to be either stored within the project which is
   reviewed (i.e. within the git repository) or outside the project.
+	- option for future update
 - Allow database directory to be either part of the project or stored
   outside the project.
+	- option for future update
 - Allow report directory to be either part of the project or stored
   outside the project.
+	- option for future update
 - Storage place for configuration, database and report managed
   independently via command line option.
+	- option for future update
 
 - Add field for name who reported an issue.
+	- tbd
 
 Topics to consider
 ------------------
 
 - What happens if a file is removed?
+	- all open IDs will be closed - should be no problem
 - What happens if a file is renamed?
+	- does not matter - review minder works ID dependant, not file name dependant - expecting unique IDs for each review item
 - Shall languages using other comment style than C/C++ be supported?
+	- yes, but for a future version
 
 Software design
 ---------------
