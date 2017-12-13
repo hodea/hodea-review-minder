@@ -140,6 +140,7 @@ class rm_handle_entry:
         rm_db['minder_items'][p]['comment'] = comment
         rm_db['minder_items'][p]['status'] = self.status
         rm_db['minder_items'][p]['severity'] = self.severity
+        rm_db['minder_items'][p]['file'] = filename
         return p
 
 
@@ -254,7 +255,8 @@ class hodea_review_minder:
                                 entry_handler = rm_handle_entry(entry)
                                 p = entry_handler.get_entry_status(flog, self.dict, name)
                                 #remove found IDs from found list - all left on list are deleted in file and needs to be closed
-                                self.IDlist.remove(self.dict['minder_items'][p]['ID'])
+                                if self.dict['minder_items'][p]['ID'] in self.IDlist:
+                                    self.IDlist.remove(self.dict['minder_items'][p]['ID'])
                                 #if status open
                                 if self.dict['minder_items'][p]['status'] is sup_status[0]:
                                     newfile = newfile + '/*TODO:review:STATUS:' + \
