@@ -184,16 +184,16 @@ document.write('<div id="tablediv">')
 document.write('</div>')
 
 
-function sort(byvalue)
+function sort(order)
 {
     
-	if(byvalue == 'minimize')
+	if(order == 'minimize')
 	{
 		printheader();
 		return;
 	}
 	printoverview('minimize');
-    if(byvalue == 'ID')
+    if(order == 'ID')
     {
         if(sortID)
         {
@@ -210,7 +210,7 @@ function sort(byvalue)
             sortID = true;
         }
     }
-    else if(byvalue == 'filepath')
+    else if(order == 'filepath')
     {
         if(sortfilepath)
         {
@@ -227,7 +227,7 @@ function sort(byvalue)
             sortfilepath = true;
         }
     }
-    else if(byvalue == 'status')
+    else if(order == 'status')
     {
         if(sortstatus)
         {
@@ -245,7 +245,7 @@ function sort(byvalue)
         }
 
     }
-    else if(byvalue == 'opendate')
+    else if(order == 'opendate')
     {
         if(sortdate)
         {
@@ -262,7 +262,7 @@ function sort(byvalue)
             sortdate = true;
         }
     }
-    else if(byvalue == 'closedate')
+    else if(order == 'closedate')
     {
         if(sortclosedate)
         {
@@ -279,7 +279,7 @@ function sort(byvalue)
             sortclosedate = true;
         }
     }
-    else if(byvalue == 'severity')
+    else if(order == 'severity')
     {
         if(sortseverity)
         {
@@ -296,7 +296,7 @@ function sort(byvalue)
             sortseverity = true;
         }
     }
-    else if(byvalue == 'comments')
+    else if(order == 'comments')
     {
         if(sortcomments)
         {
@@ -380,11 +380,11 @@ function printheader()
     newtable = ''    
     document.getElementById('tablediv').innerHTML=newtable;
 }
-function printoverview(byvalue)
+function printoverview(order)
 {
     var totalnumber = myJSONObject.overview[0].iopen+myJSONObject.overview[0].iclosed+myJSONObject.overview[0].irejected
 	newoverview = ''
-    if(byvalue == 'expand')
+    if(order == 'expand')
     {
 		sort('minimize');
         newoverview = '<table cellpadding="0" cellspacing="0" border="0" width="800" style="padding-top:50px;font-size:10pt"><tr><td>'
@@ -469,6 +469,12 @@ function calcglobalseverity()
     }
     
 }
+
+function printfilelog(order)
+{
+
+}
+
 
 //calcglobalseverity();
 sort('status');
