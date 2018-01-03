@@ -12,6 +12,7 @@ import argparse
 import os
 from minder_config import minder_cfg 
 from minder_database import minder_db
+from minder_htmlreport import minder_report
 import time
 import hashlib
 import uuid
@@ -50,8 +51,8 @@ def parse_cmdline():
         )
     parser.add_argument(
         '--htmlreport','-r',
-        help = "create html report after parsing",
-        default = "true",
+        help = "create html report",
+        default = "false",
         choices = ["false","true"],
         )
     parser.add_argument(
@@ -211,7 +212,8 @@ class hodea_review_minder:
         print(self.dict)
         print("*****")
     #Debug End
-        
+    def rm_report(self):
+        minder_report(self.topdir, self.dict)   
     def rm_access_check(self):
         
         for root, dirs, files in os.walk(self.topdir):
@@ -301,22 +303,24 @@ def main():
     else:
         topdir = '.'
     print('top-dir:  '+ topdir)
-        
     try:
         minder = hodea_review_minder(topdir)
     except:
         print("Init ERROR: Stopping  minder! Please correct errors before proceeding.")
         return
-    
-    try:
-        minder.rm_access_check()
-    except:
-        print("Access ERROR: Stopping  minder! Please correct errors before proceeding.")
-        return
+    if args.htmlreport is not None:
+        minder.rm_report()
+    else:
+       
+        try:
+            minder.rm_access_check()
+        except:
+            print("Access ERROR: Stopping  minder! Please correct errors before proceeding.")
+            return
     
     #try:
-    minder.rm_search()
-    minder.rm_setdb()
+        minder.rm_search()
+        minder.rm_setdb()
  
    # except:
      #   print("Parsing ERROR: Stopping  minder! Please correct errors before proceeding.")

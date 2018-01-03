@@ -13,25 +13,25 @@ table.reviewtable tr, td { padding:5px;}
 
 table.reviewtable tr:hover {color: white; background-color: #1E90FF}
 
-</style>
+</style> 
 </head>
 <html>
 <script type="text/javascript">
 
 
+
+
+var ov_closed =  9;
+var ov_comment = 0;
+var ov_major = 1;
+var ov_minor = 13;
+var ov_open = 0;
+var ov_rejected = 5;
+var ov_undefined = 0;
+
+
 var myJSONObject = {
-"overview": [
-{
-"iclosed": 9,
-"icomment": 0,
-"imajor": 1,
-"iminor": 13,
-"iopen": 0,
-"irejected": 5,
-"iundefined": 0
-}
-],
-"reviewitem": [
+"minder_items": [
 {
 "ID": "0",
 "closedate": "30/12/2015",
@@ -141,7 +141,7 @@ var myJSONObject = {
 "status": "Rejected"
 },
 {
-"ID": "12",
+"ID": "RM_ID_0___6088b46ea95d8712c7e0fbc0e4bf4d1a2fa266f8",
 "closedate": "30/12/2015",
 "comments": "Bootloading on primary currently disabled</br>test test</br>test</br>test</br>test",
 "filepath": "test.txt",
@@ -197,14 +197,14 @@ function sort(order)
     {
         if(sortID)
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((Number(b.ID) < Number(a.ID)) ? -1 : ((Number(a.ID) == Number(b.ID)) ? 0 : 1));
             });
             sortID = false;
         }
         else
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((Number(a.ID) < Number(b.ID)) ? -1 : ((Number(a.ID) == Number(b.ID)) ? 0 : 1));
             });
             sortID = true;
@@ -214,14 +214,14 @@ function sort(order)
     {
         if(sortfilepath)
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((b.filepath < a.filepath) ? -1 : ((a.filepath == b.filepath) ? 0 : 1));
             });
             sortfilepath = false;
         }
         else
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((a.filepath < b.filepath) ? -1 : ((a.filepath == b.filepath) ? 0 : 1));
             });
             sortfilepath = true;
@@ -231,14 +231,14 @@ function sort(order)
     {
         if(sortstatus)
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((Number(b.gloablsevstatus) < Number(a.gloablsevstatus)) ? -1 : ((Number(a.gloablsevstatus) == Number(b.gloablsevstatus)) ? 0 : 1));
             });
             sortstatus = false;
         }
         else
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((Number(a.gloablsevstatus) < Number(b.gloablsevstatus)) ? -1 : ((Number(a.gloablsevstatus) == Number(b.gloablsevstatus)) ? 0 : 1));
             });
             sortstatus = true;
@@ -249,14 +249,14 @@ function sort(order)
     {
         if(sortdate)
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((b.opendate < a.opendate) ? -1 : ((a.opendate == b.opendate) ? 0 : 1));
             });
             sortdate = false;
         }
         else
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((a.opendate < b.opendate) ? -1 : ((a.opendate == b.opendate) ? 0 : 1));
             });
             sortdate = true;
@@ -266,14 +266,14 @@ function sort(order)
     {
         if(sortclosedate)
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((b.closedate < a.closedate) ? -1 : ((a.closedate == b.closedate) ? 0 : 1));
             });
             sortclosedate = false;
         }
         else
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((a.closedate < b.closedate) ? -1 : ((a.closedate == b.closedate) ? 0 : 1));
             });
             sortclosedate = true;
@@ -283,14 +283,14 @@ function sort(order)
     {
         if(sortseverity)
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((Number(b.gloablsevseverity) < Number(a.gloablsevseverity)) ? -1 : ((Number(a.gloablsevseverity) == Number(b.gloablsevseverity)) ? 0 : 1));
             });
             sortseverity = false;
         }
         else
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((Number(a.gloablsevseverity) < Number(b.gloablsevseverity)) ? -1 : ((Number(a.gloablsevseverity) == Number(b.gloablsevseverity)) ? 0 : 1));
             });
             sortseverity = true;
@@ -300,14 +300,14 @@ function sort(order)
     {
         if(sortcomments)
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((b.comments < a.comments) ? -1 : ((a.comments == b.comments) ? 0 : 1));
             });
             sortcomments = false;
         }
         else
         {
-            myJSONObject.reviewitem.sort(function(a, b) {
+            myJSONObject.minder_items.sort(function(a, b) {
                 return ((a.comments < b.comments) ? -1 : ((a.comments == b.comments) ? 0 : 1));
             });
             sortcomments = true;
@@ -326,28 +326,28 @@ function printtable()
     newtable = newtable + '<th width="100"><a href="javascript:sort(\'closedate\')" class="nav">Close date</a></th>'
     newtable = newtable + '<th width="100"><a href="javascript:sort(\'severity\')" class="nav">Severity</a></th>'
     newtable = newtable + '<th><a href="javascript:sort(\'comments\')" class="nav">Comments</a></th><tr>' 
-    for(i=0;i<myJSONObject.reviewitem.length;i++)
+    for(i=0;i<myJSONObject.minder_items.length;i++)
     {
         if(i%2 == 0)
         {
-            newtable = newtable + '<tr bgcolor="#EFEFEF"><td align="center">' + myJSONObject.reviewitem[i].ID.split('___')[0] + '</td>'
+            newtable = newtable + '<tr bgcolor="#EFEFEF"><td align="center">' + myJSONObject.minder_items[i].ID.split('___')[0].split('_')[2] + '</td>'
         } 
         else
         {
-            newtable = newtable + '<tr bgcolor="#FCFCFC"><td align="center">' + myJSONObject.reviewitem[i].ID.split('___')[0] + '</td>'
+            newtable = newtable + '<tr bgcolor="#FCFCFC"><td align="center">' + myJSONObject.minder_items[i].ID.split('___')[0].split('_')[2] +  '</td>'
         }
-            newtable = newtable + '<td align="center">' + myJSONObject.reviewitem[i].filepath + '</td>' 
-            newtable = newtable + '<td align="center">' + myJSONObject.reviewitem[i].status + '</td>' 
-            newtable = newtable + '<td align="center">' + myJSONObject.reviewitem[i].opendate + '</td>'  
-            newtable = newtable + '<td align="center">' + myJSONObject.reviewitem[i].closedate + '</td>' 
-            newtable = newtable + '<td align="center">' + myJSONObject.reviewitem[i].severity + '</td>' 
-            if(myJSONObject.reviewitem[i].comments.split("</br>").length > 1)
+            newtable = newtable + '<td align="center">' + myJSONObject.minder_items[i].filepath + '</td>' 
+            newtable = newtable + '<td align="center">' + myJSONObject.minder_items[i].status + '</td>' 
+            newtable = newtable + '<td align="center">' + myJSONObject.minder_items[i].opendate + '</td>'  
+            newtable = newtable + '<td align="center">' + myJSONObject.minder_items[i].closedate + '</td>' 
+            newtable = newtable + '<td align="center">' + myJSONObject.minder_items[i].severity + '</td>' 
+            if(myJSONObject.minder_items[i].comments.split("</br>").length > 1)
             { 
-                newtable = newtable + '<td><a id="commentlinker'+i+'" class="nav">' + myJSONObject.reviewitem[i].comments.split("</br>")[0] + '</a></td></div></tr>'
+                newtable = newtable + '<td><a id="commentlinker'+i+'" class="nav">' + myJSONObject.minder_items[i].comments.split("</br>")[0] + '</a></td></div></tr>'
             }
             else
             {
-                newtable = newtable + '<td><a class="navnolink">' + myJSONObject.reviewitem[i].comments.split("</br>")[0] + '</a></td></div></tr>'
+                newtable = newtable + '<td><a class="navnolink">' + myJSONObject.minder_items[i].comments.split("</br>")[0] + '</a></td></div></tr>'
             }
     }
     newtable = newtable + '</table>'
@@ -355,19 +355,19 @@ function printtable()
 
 
     
-    for(i=0;i<myJSONObject.reviewitem.length;i++)
+    for(i=0;i<myJSONObject.minder_items.length;i++)
     {
-        if(myJSONObject.reviewitem[i].comments.split("</br>").length > 1)
+        if(myJSONObject.minder_items[i].comments.split("</br>").length > 1)
         {
             document.getElementById("commentlinker"+i).addEventListener("click", (function(j) {
                 return function(e) {
-                if(document.getElementById("commentlinker"+j).innerHTML == myJSONObject.reviewitem[j].comments.split("</br>")[0])
+                if(document.getElementById("commentlinker"+j).innerHTML == myJSONObject.minder_items[j].comments.split("</br>")[0])
                 {
-                        document.getElementById("commentlinker"+j).innerHTML = myJSONObject.reviewitem[j].comments;
+                        document.getElementById("commentlinker"+j).innerHTML = myJSONObject.minder_items[j].comments;
                 }
                 else
                 {
-                    document.getElementById("commentlinker"+j).innerHTML = myJSONObject.reviewitem[j].comments.split("</br>")[0]
+                    document.getElementById("commentlinker"+j).innerHTML = myJSONObject.minder_items[j].comments.split("</br>")[0]
                 }
                 e.preventDefault();
                 }
@@ -382,7 +382,9 @@ function printheader()
 }
 function printoverview(order)
 {
-    var totalnumber = myJSONObject.overview[0].iopen+myJSONObject.overview[0].iclosed+myJSONObject.overview[0].irejected
+    var totalnumber = ov_open+ov_closed+ov_rejected
+	
+
 	newoverview = ''
     if(order == 'expand')
     {
@@ -390,22 +392,22 @@ function printoverview(order)
         newoverview = '<table cellpadding="0" cellspacing="0" border="0" width="800" style="padding-top:50px;font-size:10pt"><tr><td>'
         newoverview = newoverview + '<table cellpadding="0" cellspacing="0" border="0" width="200" style="font-size:10pt">'
         newoverview = newoverview + '<tr><td width="150">Open</td>'
-        newoverview = newoverview + '<td>' + myJSONObject.overview[0].iopen + '</td>'
+        newoverview = newoverview + '<td>' + ov_open + '</td>'
         newoverview = newoverview + '</tr><tr>'
         newoverview = newoverview + '<td>Rejected</td>'
-        newoverview = newoverview + '<td>' + myJSONObject.overview[0].irejected + '</td>'
+        newoverview = newoverview + '<td>' + ov_rejected + '</td>'
         newoverview = newoverview + '</tr><tr>'
         newoverview = newoverview + '<td>Closed</td>'
-        newoverview = newoverview + '<td>' + myJSONObject.overview[0].iclosed + '</td>'
+        newoverview = newoverview + '<td>' + ov_closed + '</td>'
         newoverview = newoverview + '</tr></table></td><td>'
         newoverview = newoverview + '<table cellpadding="0" cellspacing="0" border="0" width="600" height ="20">'
         newoverview = newoverview + '<tr>' 
-        if(myJSONObject.overview[0].iopen > 0){
-            newoverview = newoverview + '<td style="width:' + (100*myJSONObject.overview[0].iopen)/(totalnumber) +'%" bgcolor="#F76C6C"></td>'
-        }if(myJSONObject.overview[0].irejected > 0){
-            newoverview = newoverview + '<td style="width:' + (100*myJSONObject.overview[0].irejected)/(totalnumber) + '%" bgcolor="#b2ff00"></td>'
-        }if(myJSONObject.overview[0].iclosed > 0){
-            newoverview = newoverview + '<td style="width:' + (100*myJSONObject.overview[0].iclosed)/(totalnumber) + '%" bgcolor="#7ACC57"></td>'
+        if(ov_open > 0){
+            newoverview = newoverview + '<td style="width:' + (100*ov_open)/(totalnumber) +'%" bgcolor="#F76C6C"></td>'
+        }if(ov_rejected > 0){
+            newoverview = newoverview + '<td style="width:' + (100*ov_rejected)/(totalnumber) + '%" bgcolor="#b2ff00"></td>'
+        }if(ov_closed > 0){
+            newoverview = newoverview + '<td style="width:' + (100*ov_closed)/(totalnumber) + '%" bgcolor="#7ACC57"></td>'
         }   
               
         newoverview = newoverview + '</tr></table></td></tr></table>'
@@ -413,24 +415,24 @@ function printoverview(order)
         newoverview = newoverview + '<tr><td>'
         newoverview = newoverview + '<table cellpadding="0" cellspacing="0" border="0" width="200" style="font-size:10pt">'
         newoverview = newoverview + '<tr><td width="150">Major</td>'
-        newoverview = newoverview + '<td>' + myJSONObject.overview[0].imajor + '</td>'            
+        newoverview = newoverview + '<td>' + ov_major + '</td>'            
         newoverview = newoverview + '</tr><tr><td>Minor</td>'
-        newoverview = newoverview + '<td>' + myJSONObject.overview[0].iminor + '</td>'            
+        newoverview = newoverview + '<td>' + ov_minor + '</td>'            
         newoverview = newoverview + '</tr><tr><td>Comments</td>'
-        newoverview = newoverview + '<td>' + myJSONObject.overview[0].icomment + '</td>'            
+        newoverview = newoverview + '<td>' + ov_comment + '</td>'            
         newoverview = newoverview + '</tr><tr><td>Undefined</td>'
-        newoverview = newoverview + '<td>' + myJSONObject.overview[0].iundefined + '</td>'            
+        newoverview = newoverview + '<td>' + ov_undefined + '</td>'            
         newoverview = newoverview + '</tr></table></td>'
         newoverview = newoverview + '<td><table cellpadding="0" cellspacing="0" border="0" width="600" height="20" >'
         newoverview = newoverview + '<tr>'
-        if(myJSONObject.overview[0].imajor > 0){    
-            newoverview = newoverview + '<td style="width:' + (100*myJSONObject.overview[0].imajor)/(totalnumber) +'%" bgcolor="#F76C6C"></td>'
-        }if(myJSONObject.overview[0].iminor > 0){
-            newoverview = newoverview + '<td style="width:' + (100*myJSONObject.overview[0].iminor)/(totalnumber) + '%" bgcolor="#FFEC5E"></td>'
-        }if(myJSONObject.overview[0].icomment > 0){
-            newoverview = newoverview + '<td style="width:' + (100*myJSONObject.overview[0].icomment)/(totalnumber) + '%" bgcolor="#7ACC57"></td>'
-        }if(myJSONObject.overview[0].iundefined > 0){
-            newoverview = newoverview + '<td style="width:' + (100*myJSONObject.overview[0].iundefined)/(totalnumber) + '%" bgcolor="#e5e5e5"></td>'
+        if(ov_major > 0){    
+            newoverview = newoverview + '<td style="width:' + (100*ov_major)/(totalnumber) +'%" bgcolor="#F76C6C"></td>'
+        }if(ov_minor > 0){
+            newoverview = newoverview + '<td style="width:' + (100*ov_minor)/(totalnumber) + '%" bgcolor="#FFEC5E"></td>'
+        }if(ov_comment > 0){
+            newoverview = newoverview + '<td style="width:' + (100*ov_comment)/(totalnumber) + '%" bgcolor="#7ACC57"></td>'
+        }if(ov_undefined > 0){
+            newoverview = newoverview + '<td style="width:' + (100*ov_undefined)/(totalnumber) + '%" bgcolor="#e5e5e5"></td>'
         }        
         newoverview = newoverview + '</tr></table></td></tr></table>' 
     }
@@ -442,30 +444,30 @@ function printoverview(order)
 function calcglobalseverity()
 {
     var a,b;
-    for(i=0;i<myJSONObject.reviewitem.length;i++)
+    for(i=0;i<myJSONObject.minder_items.length;i++)
     {
-        if(myJSONObject.reviewitem[i].severity == 'Major') a = 4;
-        else if(myJSONObject.reviewitem[i].severity == 'Minor') a = 3;
-        else if(myJSONObject.reviewitem[i].severity == 'Comment') a = 2;
+        if(myJSONObject.minder_items[i].severity == 'Major') a = 4;
+        else if(myJSONObject.minder_items[i].severity == 'Minor') a = 3;
+        else if(myJSONObject.minder_items[i].severity == 'Comment') a = 2;
         else a = 1;
         
-        if(myJSONObject.reviewitem[i].status == 'Open') b = 21;
-        else if(myJSONObject.reviewitem[i].status == 'Rejected') b = 5;
+        if(myJSONObject.minder_items[i].status == 'Open') b = 21;
+        else if(myJSONObject.minder_items[i].status == 'Rejected') b = 5;
         else b = 1;
         
-        myJSONObject.reviewitem[i].gloablsevstatus = a * b;
+        myJSONObject.minder_items[i].gloablsevstatus = a * b;
         
         
-        if(myJSONObject.reviewitem[i].severity == 'Major') a = 40;
-        else if(myJSONObject.reviewitem[i].severity == 'Minor') a = 13;
-        else if(myJSONObject.reviewitem[i].severity == 'Comment') a = 4;
+        if(myJSONObject.minder_items[i].severity == 'Major') a = 40;
+        else if(myJSONObject.minder_items[i].severity == 'Minor') a = 13;
+        else if(myJSONObject.minder_items[i].severity == 'Comment') a = 4;
         else a = 1;
         
-        if(myJSONObject.reviewitem[i].status == 'Open') b = 3;
-        else if(myJSONObject.reviewitem[i].status == 'Rejected') b = 2;
+        if(myJSONObject.minder_items[i].status == 'Open') b = 3;
+        else if(myJSONObject.minder_items[i].status == 'Rejected') b = 2;
         else b = 1;
         
-        myJSONObject.reviewitem[i].gloablsevseverity = a * b;
+        myJSONObject.minder_items[i].gloablsevseverity = a * b;
     }
     
 }
