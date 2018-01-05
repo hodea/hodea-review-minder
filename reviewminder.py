@@ -18,7 +18,7 @@ import hashlib
 import uuid
 
 sup_status = ['open','closed','rejected']
-sup_severity = ['major','minor','warning']
+sup_severity = ['major','minor','comments']
     
 ########################################################
 # Function: 
@@ -52,7 +52,7 @@ def parse_cmdline():
     parser.add_argument(
         '--htmlreport','-r',
         help = "create html report",
-        default = "false",
+        default = "true",
         choices = ["false","true"],
         )
     parser.add_argument(

@@ -29,13 +29,7 @@ table.reviewtable tr:hover {color: white; background-color: #1E90FF}
 <html>
 <script type="text/javascript">
 
-var ov_closed =  0;
-var ov_comment = 0;
-var ov_major = 0;
-var ov_minor = 0;
-var ov_open = 0;
-var ov_rejected = 0;
-var ov_undefined = 0;
+
 
 '''
 
@@ -376,16 +370,48 @@ sort('minimize');
 class minder_report:
     
     def __init__(self, topdir, Minderdict):
+        ov_major = 0;
+        ov_minor = 0;
+        ov_comments = 0;
+        ov_undefined = 0;
+        ov_open = 0;
+        ov_closed = 0;
+        ov_rejected = 0;
     
         self.repdir = topdir + r'/review_minder/minder.html'
     
         if not (os.path.isdir(topdir + r'\review_minder')):
             os.mkdir(topdir + r'\review_minder')
 
+
+        
+        for i in range(0,len(Minderdict['minder_items'])):
+            if "major" in Minderdict['minder_items'][i]['severity']:
+                ov_major = ov_major + 1
+            elif "minor" in Minderdict['minder_items'][i]['severity']:
+                ov_minor = ov_minor + 1
+            elif "comments" in Minderdict['minder_items'][i]['severity']:
+                ov_comments = ov_comments + 1
+            else:
+                ov_undefined = ov_undefined + 1
+                
+            if "open" in Minderdict['minder_items'][i]['status']:
+                ov_open = ov_open + 1
+            elif "closed" in Minderdict['minder_items'][i]['status']:
+                ov_closed = ov_closed + 1
+            else:
+                ov_rejected = ov_rejected + 1                
+                
         flog = open(self.repdir, 'w')   
         flog.write(htmbody_head) 
         
-        
+
+        ov_string = 'var ov_closed = ' + str(ov_closed) + ';' + 'var ov_comment = ' + str(ov_comments) + ';' +\
+        'var ov_major = ' + str(ov_major) + ';' + 'var ov_minor = ' + str(ov_minor) + ';' +\
+        'var ov_open = ' + str(ov_open) + ';' + 'var ov_rejected = ' + str(ov_rejected)  + ';' +\
+        'var ov_undefined = ' + str(ov_undefined) + ';'
+
+        flog.write(ov_string)
         flog.write('var myJSONObject = ')
         flog.write(json.dumps(Minderdict,sort_keys=True,indent=0,separators=(',',': ')))
         flog.write(htmbody) 
