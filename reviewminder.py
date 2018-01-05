@@ -319,7 +319,7 @@ def main():
             return
     
     #try:
-        print("test")
+
         minder.rm_search()
         minder.rm_setdb()
  
