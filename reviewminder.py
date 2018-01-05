@@ -308,7 +308,7 @@ def main():
     except:
         print("Init ERROR: Stopping  minder! Please correct errors before proceeding.")
         return
-    if args.htmlreport is not None:
+    if args.htmlreport is not "false":
         minder.rm_report()
     else:
        
@@ -319,6 +319,7 @@ def main():
             return
     
     #try:
+        print("test")
         minder.rm_search()
         minder.rm_setdb()
  
