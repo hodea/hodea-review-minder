@@ -27,8 +27,9 @@ filetype = .c;.h;.cpp
 ;-----------------------------------------------------------------
 # exclude path
 # all sub-directories will be excluded as well
+# path has to end with either '\' or '/'
 
-exclude =  ./review_minder
+exclude =  ./review_minder/
 
 
 ;-----------------------------------------------------------------
@@ -70,8 +71,8 @@ class minder_cfg:
         except:
             print("ERROR: Can't find configuration keyword '" + configname +"'")
             raise Exception
-
-        return re.split(regexPattern,config['minder_cfg'][configname].replace('/','\\'))
+       
+        return  re.split(regexPattern,config['minder_cfg'][configname].replace('\\',os.path.sep).replace('/',os.path.sep))
 
 
     

@@ -52,7 +52,7 @@ def parse_cmdline():
     parser.add_argument(
         '--htmlreport','-r',
         help = "create html report",
-        default = "true",
+        default = "false",
         choices = ["false","true"],
         )
     parser.add_argument(
@@ -66,7 +66,12 @@ def parse_cmdline():
     args = parser.parse_args()
     return args
 
-
+def isA_subdirOfB_orAisB(A, B):
+    """It is assumed that A is a directory."""
+    relative = os.path.relpath(os.path.realpath(A), 
+                               os.path.realpath(B))
+    return not (relative == os.pardir
+            or  relative.startswith(os.pardir + os.sep))
 
 
 class rm_handle_entry:
@@ -176,8 +181,19 @@ class hodea_review_minder:
         try:
             config = minder_cfg(self.topdir)
             self.cfg_name = config.read_config(configname='name')
+            self.cfg_name = [s.strip() for s in self.cfg_name]
+
             self.cfg_type = config.read_config(configname='filetype')
+            self.cfg_type = [s.strip() for s in self.cfg_type]
+
             self.cfg_exclude = config.read_config(configname='exclude')
+            self.cfg_exclude = [s.strip() for s in self.cfg_exclude]
+            
+            for i in range(0,len(self.cfg_exclude)):
+                if os.path.sep not in os.path.dirname(self.cfg_exclude[i]):
+                    print("All files are excluded from parse. Please check the cfg")
+                    raise Exception
+
         except:
             raise Exception 
     #Debug print; TODO remove
@@ -188,7 +204,7 @@ class hodea_review_minder:
         print(self.cfg_type)
         print("*****")
         print("*****DEBUG:cfg exclude")
-        print(self.cfg_exclude) 
+        print(self.cfg_exclude)
         print("*****")
     #Debug End
         
@@ -220,7 +236,8 @@ class hodea_review_minder:
             for name in files:
                 find = False
                 for i in range(0,len(self.cfg_exclude)):
-                    if self.cfg_exclude[i] in os.path.join(root, name):
+
+                    if os.path.join(root, name).startswith(os.path.dirname(self.cfg_exclude[i])):
                         find = True
                 if find is True:
                     continue
@@ -236,11 +253,15 @@ class hodea_review_minder:
                             raise Exception
                             
     def rm_search(self):
+
         for root, dirs, files in os.walk(self.topdir):
             for name in files:
                 find = False
                 for i in range(0,len(self.cfg_exclude)):
-                    if self.cfg_exclude[i] in os.path.join(root, name):
+
+                    if os.path.join(root, name).startswith(os.path.dirname(self.cfg_exclude[i])):
+                        #print("EXCLUDE:         " + os.path.join(root, name))
+
                         find = True
                 if find is True:
                     continue
@@ -299,7 +320,7 @@ def main():
     args = parse_cmdline()  
     # use other source than default
     if args.path is not None:
-        topdir = args.path.replace('\\','/')
+        topdir = args.path.replace('\\',os.path.sep).replace('/',os.path.sep)
     else:
         topdir = '.'
     print('top-dir:  '+ topdir)
@@ -308,7 +329,7 @@ def main():
     except:
         print("Init ERROR: Stopping  minder! Please correct errors before proceeding.")
         return
-    if args.htmlreport is not "false":
+    if 'true' in str(args.htmlreport):
         minder.rm_report()
     else:
        
