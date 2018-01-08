@@ -13,7 +13,7 @@ configtemplate = '''# hodea review minder cfg file
 [minder_cfg]
 
 # !!! USE INDENTIONS FOR MULTILINE OPTIONS !!!
-# !!! Option Seperator: EOL or ";" !!!
+# !!! Option Separator: EOL or ";" !!!
 ;-----------------------------------------------------------------
 # Project Name
 
