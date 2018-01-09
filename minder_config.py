@@ -25,11 +25,11 @@ name = insert project name here
 filetype = .c;.h;.cpp
 
 ;-----------------------------------------------------------------
-# exclude path
+# exclude path - relativ to given top dir
 # all sub-directories will be excluded as well
-# path has to end with either '\' or '/'
+# each exclude path has to start with '.\' or './'
 
-exclude =  ./review_minder/
+exclude =    ./review_minder
 
 
 ;-----------------------------------------------------------------

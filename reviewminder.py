@@ -190,9 +190,12 @@ class hodea_review_minder:
             self.cfg_exclude = [s.strip() for s in self.cfg_exclude]
             
             for i in range(0,len(self.cfg_exclude)):
-                if os.path.sep not in os.path.dirname(self.cfg_exclude[i]):
-                    print("All files are excluded from parse. Please check the cfg")
-                    raise Exception
+                if self.cfg_exclude[i].startswith('.'):     #cfg exclude has to start with '.'
+                    if not self.cfg_exclude[i].endswith(os.path.sep):
+                        self.cfg_exclude[i] = self.cfg_exclude[i] + os.path.sep#add path seperator at end if not there
+                    if os.path.sep not in os.path.dirname(self.cfg_exclude[i]):
+                        print("All files are excluded from parse. Please check the cfg")
+                        raise Exception
 
         except:
             raise Exception 
@@ -215,8 +218,9 @@ class hodea_review_minder:
             self.minder_dict = minder_db(self.topdir)
             self.dict = self.minder_dict.Getdb()
             #get all IDs from list
+            self.IDlist = []
             if self.dict['minder_items']:
-                self.IDlist = []
+                
                 for i in range(0,len(self.dict['minder_items'])):
                     self.IDlist.append(self.dict['minder_items'][i]['ID'])
 
@@ -278,6 +282,7 @@ class hodea_review_minder:
                                 entry_handler = rm_handle_entry(entry)
                                 p = entry_handler.get_entry_status(flog, self.dict, name)
                                 #remove found IDs from found list - all left on list are deleted in file and needs to be closed
+                                
                                 if self.dict['minder_items'][p]['ID'] in self.IDlist:
                                     self.IDlist.remove(self.dict['minder_items'][p]['ID'])
                                 #if status open
