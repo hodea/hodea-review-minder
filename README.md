@@ -1,4 +1,4 @@
-# hodea-review-logger
+# hodea-review-minder
 
 ![logo](logo/hodea_review_minder_logo.png)
 
