@@ -10,7 +10,7 @@ __version__ ="0.0.1 Alpha"
 
 import argparse
 import os
-from minder_config import minder_cfg 
+from minder_config import minder_cfg  
 from minder_database import minder_db
 from minder_htmlreport import minder_report
 import time

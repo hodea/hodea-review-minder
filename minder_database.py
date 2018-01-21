@@ -9,7 +9,7 @@ import json
 
 
 jsonbody ='''{
-"minder_items": [
+"minder_items": [ 
 ]
 }'''
 

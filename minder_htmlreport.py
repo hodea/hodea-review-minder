@@ -68,9 +68,6 @@ table.reviewtable tr:hover {color: white; background-color: #1E90FF}
 </head>
 <html>
 <script type="text/javascript">
-
-
-
 '''
 
 htmbody='''
@@ -88,9 +85,18 @@ var buttonhandler = [false,true,false];
 
 </script>
 <body>
-<button class="myButton" type="button" onclick="href:javascript:printoverview('expand')">Overview</button>
-<button class="myButton" type="button" onclick="href:javascript:sort('expand')">Issue Log</button>
-<button class="myButton" type="button">File Log</button>
+
+<table id="toptable" class="toptable" cellpadding="0" cellspacing="0" border="0"  style="padding-bottom:20px;font-size:10pt">
+
+<td><a href="https://github.com/hodea/hodea-review-minder"><img src=".\..\logo\hodea_review_minder_logo.png" alt="Miner_logo" width="64" height="64"></td>
+<td>
+<td>Last Update:</td>
+<td>test</td></td>
+
+</table>
+<button class="myButton" type="button" onclick="href:javascript:sort('expand')">Issues</button>
+<button class="myButton" type="button">Coverage</button>
+<button class="myButton" type="button" onclick="href:javascript:printoverview('expand')">Executive Summmary</button>
 <script type="text/javascript">
 document.write('<div id="overviewdiv">')
 document.write('</div>')
@@ -394,7 +400,7 @@ function printfilelog(order)
 
 calcglobalseverity();
 sort('status');
-sort('minimize');
+sort('expand');
 
 
 </script>
