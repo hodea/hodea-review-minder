@@ -14,11 +14,11 @@
 		.st4 {fill:none;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:1}
 		.st5 {fill:#ff0000;font-family:Bell MT;font-size:1.00001em;font-weight:bold}
 		.st6 {fill:#000000;font-size:0.666659em;font-weight:normal}
-		.st7 {font-size:1.33332em}
-		.st8 {fill:#000000;font-size:1em;font-weight:normal}
+		.st7 {font-size:1.49999em}
+		.st8 {fill:#000000;font-size:1.16665em;font-weight:normal}
 		.st9 {font-size:1em}
 		.st10 {fill:#f2f2f2;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:1}
-		.st11 {fill:#000000;font-family:Calibri;font-size:0.666664em}
+		.st11 {fill:#000000;font-family:Calibri;font-size:0.833336em}
 		.st12 {fill:#0070c0;stroke:#0070c0;stroke-linecap:butt;stroke-width:0.75}
 		.st13 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
 	]]>
@@ -340,36 +340,37 @@
 			<title>Tabelle.80</title>
 			<ellipse cx="2.12598" cy="124.848" rx="2.12598" ry="2.12598" class="st3"/>
 		</g>
-		<g id="shape123-233" v:mID="123" v:groupContext="shape" transform="translate(63.4872,-28.0542)">
+		<g id="shape123-233" v:mID="123" v:groupContext="shape" transform="translate(56.4006,-28.0542)">
 			<title>Tabelle.123</title>
 			<desc>Highly Optimized Deeply Embedded Auxiliaries</desc>
 			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="26.8425" cy="87.9587" width="53.69" height="78.0315"/>
-			<rect x="0" y="48.9429" width="53.6849" height="78.0315" class="st4"/>
-			<text x="4" y="55.56" class="st5" v:langID="3079"><v:paragraph/><v:tabList/>H<tspan class="st6">ighly<v:newlineChar/></tspan><tspan
-						x="4" dy="1.125em" class="st7">O</tspan><tspan class="st8">pti</tspan><tspan class="st6">mized<v:newlineChar/></tspan><tspan
+			<v:textRect cx="31.8898" cy="87.9587" width="63.78" height="78.0315"/>
+			<rect x="0" y="48.9429" width="63.7795" height="78.0315" class="st4"/>
+			<text x="4" y="55.55" class="st5" v:langID="3079"><v:paragraph/><v:tabList/>H<tspan class="st6">ighly<v:newlineChar/></tspan><tspan
+						x="4" dy="1.1em" class="st7">O</tspan><tspan class="st8">ptim</tspan><tspan class="st6">ized<v:newlineChar/></tspan><tspan
 						x="4" dy="1.2em" class="st7">D</tspan><tspan class="st8">eepl</tspan><tspan class="st6">y<v:newlineChar/></tspan><tspan
-						x="4" dy="1.2em" class="st7">E</tspan><tspan class="st8">m</tspan><tspan class="st6">bedded<v:newlineChar/></tspan><tspan
-						x="4" dy="1.301em" class="st9">A</tspan><tspan class="st6">uxiliaries</tspan></text>		</g>
-		<g id="shape125-248" v:mID="125" v:groupContext="shape" transform="translate(11.0463,-86.0484)">
+						x="4" dy="1.351em" class="st9">E</tspan><tspan class="st6">mbedded<v:newlineChar/></tspan><tspan x="4"
+						dy="1.201em" class="st9">A</tspan><tspan class="st6">uxiliaries</tspan></text>		</g>
+		<g id="shape125-247" v:mID="125" v:groupContext="shape" transform="translate(11.0463,-86.0484)">
 			<title>Tabelle.125</title>
 			<desc>Review Minder</desc>
 			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="17.7165" cy="116.995" width="35.44" height="19.9586"/>
-			<rect x="0" y="107.016" width="35.4331" height="19.9586" class="st10"/>
-			<text x="5.98" y="114.6" class="st11" v:langID="3079"><v:paragraph v:horizAlign="1"/><v:tabList/>Review <tspan x="5.79"
+			<v:textRect cx="19.1339" cy="116.995" width="38.27" height="19.9586"/>
+			<rect x="0" y="107.016" width="38.2677" height="19.9586" class="st10"/>
+			<text x="4.46" y="114" class="st11" v:langID="3079"><v:paragraph v:horizAlign="1"/><v:tabList/>Review <tspan x="4.23"
 						dy="1.2em" class="st9">Minder</tspan></text>		</g>
-		<g id="shape154-252" v:mID="154" v:groupContext="shape" transform="translate(19.8224,-12.389)">
+		<g id="shape154-251" v:mID="154" v:groupContext="shape" transform="translate(20.9675,-20.4166)">
 			<title>Suchen</title>
 			<v:userDefs>
 				<v:ud v:nameU="msvShapeCategories" v:prompt="" v:val="VT4(Icon)"/>
 				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
 			</v:userDefs>
-			<path d="M56.7 41.94 A29.7007 29.233 -180 0 0 27 71.17 A29.5433 29.0781 -180 0 0 33.36 89.2 A7.51785 7.39946 -180 0 0
-						 30.95 90.51 L1.85 114.82 A5.03731 4.95798 -180 0 0 1.4 122.1 L4.58 125.43 A4.74176 4.66709 -180 0 0 11.79
-						 125.26 L37 96.47 A7.40923 7.29255 -180 0 0 38.35 94.13 A29.546 29.0807 -180 0 0 56.7 100.4 A29.7007 29.233
-						 -180 0 0 86.4 71.17 A29.7007 29.233 -180 0 0 56.7 41.94 ZM56.7 95.09 A24.3299 23.9467 0 0 1 32.4 71.17 A24.3299
-						 23.9467 0 0 1 56.7 47.25 A24.3299 23.9467 0 0 1 81 71.17 A24.3299 23.9467 0 0 1 56.7 95.09 Z" class="st12"/>
+			<path d="M53.26 47.1 A27.8971 27.4578 -180 0 0 25.36 74.56 A27.7493 27.3123 -180 0 0 31.33 91.5 A7.06133 6.95012 -180
+						 0 0 29.08 92.73 L1.74 115.56 A4.73142 4.65691 -180 0 0 1.32 122.39 L4.31 125.52 A4.45382 4.38368 -180 0
+						 0 11.07 125.36 L34.75 98.32 A6.95931 6.84971 -180 0 0 36.02 96.12 A27.7518 27.3147 -180 0 0 53.26 102.01
+						 A27.8971 27.4578 -180 0 0 81.15 74.56 A27.8971 27.4578 -180 0 0 53.26 47.1 ZM53.26 97.02 A22.8524 22.4925
+						 0 0 1 30.43 74.56 A22.8524 22.4925 0 0 1 53.26 52.09 A22.8524 22.4925 0 0 1 76.08 74.56 A22.8524 22.4925
+						 0 0 1 53.26 97.02 Z" class="st12"/>
 		</g>
 	</g>
 </svg>
