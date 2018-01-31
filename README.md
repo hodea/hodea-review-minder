@@ -6,7 +6,7 @@
 <table>
   <tr>
     <td>Homepage:</td>
-    <td><a href="http://www.hodea.org">href="http://www.hodea.org</a></td>
+    <td><a href="http://www.hodea.org">http://www.hodea.org</a></td>
   </tr>
   <tr>
     <td>Source code:</td>
