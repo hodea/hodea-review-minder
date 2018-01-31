@@ -1,8 +1,18 @@
 # hodea-review-minder
+**Python 3 scripts to assist code reviews**
 
 ![logo](logo/hodea_review_minder_logo.png)
 
-Python 3 scripts assisting code reviews
+<table>
+  <tr>
+    <td>Homepage:</td>
+    <td>http://www.hodea.org</td>
+  </tr>
+  <tr>
+    <td>Source code:</td>
+    <td>https://github.com/hodea/hodea-review-minder</td>
+  </tr>
+</table>
 
 ---
 
