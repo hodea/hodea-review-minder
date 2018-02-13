@@ -115,6 +115,7 @@ class rm_handle_entry:
 
     def new_entry(self, flog, rm_db, filename):
         comment = ''
+        author = ''
         salt = uuid.uuid4().hex
         hash_object = hashlib.sha1(salt.encode('utf-8'))
         new_ID = ('RM_ID_%d___'+hash_object.hexdigest()) %len(rm_db['minder_items'])
@@ -124,26 +125,36 @@ class rm_handle_entry:
                                      'opendate':time.strftime("%d/%m/%Y"),\
                                      'closedate':' ',\
                                      'file':filename})
+        
         while True:
             nextline = next(flog)
             if "*/" not in nextline:
-                comment = comment + nextline.lstrip(' ')
+                if "author:" not in nextline.lower():
+                    comment = comment + nextline.lstrip(' ')
+                else:
+                    author = nextline.split(':')[1].strip()                     
             else:
-                break
+                break            
         p = len(rm_db['minder_items']) - 1
         rm_db['minder_items'][p]['comment'] = comment
+        rm_db['minder_items'][p]['author'] = author
         return p
 
             
     def existing_entry(self,p, flog, rm_db, filename):
         comment = ''
-        while True:
+        author = ''
+        while True:            
             nextline = next(flog)
             if "*/" not in nextline:
-                comment = comment + nextline.lstrip(' ')
+                if "author:" not in nextline.lower():
+                    comment = comment + nextline.lstrip(' ')
+                else:
+                    author = nextline.split(':')[1].strip()                                        
             else:
                 break
         rm_db['minder_items'][p]['comment'] = comment
+        rm_db['minder_items'][p]['author'] = author
         rm_db['minder_items'][p]['status'] = self.status
         rm_db['minder_items'][p]['severity'] = self.severity
         rm_db['minder_items'][p]['file'] = filename
@@ -291,6 +302,8 @@ class hodea_review_minder:
                                         self.dict['minder_items'][p]['status'] + ':' +\
                                         self.dict['minder_items'][p]['severity'] + ':' +\
                                         self.dict['minder_items'][p]['ID'] + '\n' + \
+                                        'Author:' +\
+                                        self.dict['minder_items'][p]['author'] + '\n' + \
                                         self.dict['minder_items'][p]['comment'] + '*/\n' 
                                 else:
                                     self.dict['minder_items'][p]['closedate'] = time.strftime("%d/%m/%Y")
