@@ -88,7 +88,7 @@ var buttonhandler = [false,true,false];
 
 <table id="toptable" class="toptable" cellpadding="0" cellspacing="0" border="0"  style="padding-bottom:20px;font-size:10pt">
 
-<td><a href="https://github.com/hodea/hodea-review-minder"><img src=".\..\logo\hodea_review_minder_logo.png" alt="Miner_logo" width="64" height="64"></td>
+<td><a href="https://github.com/hodea/hodea-review-minder"><img src="https://raw.github.com/hodea/hodea-review-minder/master/logo/hodea_review_minder_logo.png" alt="Miner_logo" width="128" height="128"></td>
 <td>
 <td>Last Update:</td>
 <td>test</td></td>
