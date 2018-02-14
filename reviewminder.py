@@ -16,6 +16,10 @@ from minder_htmlreport import minder_report
 import time
 import hashlib
 import uuid
+import re
+
+
+
 
 sup_status = ['open','closed','rejected']
 sup_severity = ['major','minor','comments']
@@ -74,6 +78,7 @@ def isA_subdirOfB_orAisB(A, B):
             or  relative.startswith(os.pardir + os.sep))
 
 
+    
 class rm_handle_entry:
      
     
@@ -124,7 +129,7 @@ class rm_handle_entry:
                                      'severity':self.severity,\
                                      'opendate':time.strftime("%d/%m/%Y"),\
                                      'closedate':' ',\
-                                     'file':filename})
+                                     'file':flog.name.replace('\\','/')})
         
         while True:
             nextline = next(flog)
@@ -136,6 +141,7 @@ class rm_handle_entry:
             else:
                 break            
         p = len(rm_db['minder_items']) - 1
+        
         rm_db['minder_items'][p]['comment'] = comment
         rm_db['minder_items'][p]['author'] = author
         return p
@@ -153,11 +159,18 @@ class rm_handle_entry:
                     author = nextline.split(':')[1].strip()                                        
             else:
                 break
+
         rm_db['minder_items'][p]['comment'] = comment
         rm_db['minder_items'][p]['author'] = author
         rm_db['minder_items'][p]['status'] = self.status
         rm_db['minder_items'][p]['severity'] = self.severity
-        rm_db['minder_items'][p]['file'] = filename
+        
+        rm_db['minder_items'][p]['file'] = flog.name.replace('\\','/')
+        
+
+        print(rm_db['minder_items'][p]['file'])
+
+        print(rm_db['minder_items'][p])
         return p
 
 
@@ -282,8 +295,10 @@ class hodea_review_minder:
                     continue
                 for j in range(0,len(self.cfg_type)): 
                     if name.lower().endswith(self.cfg_type[j]):
-                        print(os.path.join(root, name))
+                        #print(os.path.join(root, name))
                         flog = open(os.path.join(root, name), "r")
+                        #print(os.path.dirname(flog.name))
+                        
                         newfile = ''
                         for line in flog:           #add write new file here + add hash before writing new file
                             #try:

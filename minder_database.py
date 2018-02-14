@@ -54,6 +54,8 @@ class minder_db:
     def Setdb(self, newdict):
 
         flog = open(self.dbdir, 'w')    
-        flog.write(json.dumps(newdict,sort_keys=True,indent=0,separators=(',',': ')))
+        
+        j = json.dumps(newdict,sort_keys=True,indent=0,separators=(',',': '))
+        flog.write(str(j))
         flog.close  
         
