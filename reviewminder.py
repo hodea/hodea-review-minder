@@ -16,7 +16,8 @@ from minder_htmlreport import minder_report
 import time
 import hashlib
 import uuid
-import re
+from minder_lastreview import lastreview
+
 
 
 
@@ -259,7 +260,7 @@ class hodea_review_minder:
     def rm_report(self):
         minder_report(self.topdir, self.dict)   
     def rm_access_check(self):
-        
+        filecnt = 0
         for root, dirs, files in os.walk(self.topdir):
             for name in files:
                 find = False
@@ -276,6 +277,7 @@ class hodea_review_minder:
                             flog.close()  
                             flog = open(os.path.join(root, name), 'r+')  
                             flog.close() 
+                            filecnt+=1
                         except:
                             print("ERROR: No Access to: " + os.path.join(root, name))
                             raise Exception
@@ -341,6 +343,11 @@ class hodea_review_minder:
 
     def rm_setdb(self):
          self.minder_dict.Setdb(self.dict)
+         
+    def lastreview(self):
+        self.dict = lastreview(self.dict, self.topdir, self.cfg_exclude, self.cfg_type)
+        
+        
                             
                                 
                                 
@@ -376,6 +383,8 @@ def main():
 
         minder.rm_search()
         minder.rm_setdb()
+        
+        minder.lastreview()
  
    # except:
      #   print("Parsing ERROR: Stopping  minder! Please correct errors before proceeding.")
