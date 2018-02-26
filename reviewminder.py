@@ -345,7 +345,7 @@ class hodea_review_minder:
          self.minder_dict.Setdb(self.dict)
          
     def lastreview(self):
-        self.dict = lastreview(self.dict, self.topdir, self.cfg_exclude, self.cfg_type)
+        #self.dict = lastreview(self.dict, self.topdir, self.cfg_exclude, self.cfg_type)
         
         
                             
