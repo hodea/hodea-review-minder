@@ -15,7 +15,7 @@ import hashlib
 import uuid
 
 
-class lastreview:
+class get_lastreview:
     
     def __init__(self, minder_dict, topdir, cfg_exclude, cfg_type):
         

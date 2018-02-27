@@ -16,7 +16,7 @@ from minder_htmlreport import minder_report
 import time
 import hashlib
 import uuid
-from minder_lastreview import lastreview
+from minder_lastreview import get_lastreview
 
 
 
@@ -265,10 +265,10 @@ class hodea_review_minder:
             for name in files:
                 find = False
                 for i in range(0,len(self.cfg_exclude)):
-
-                    if os.path.join(root, name).startswith(os.path.dirname(self.cfg_exclude[i])):
+                    if os.path.join(root, name).startswith(os.path.join(self.topdir,self.cfg_exclude[i].lstrip('.'+ os.path.sep))):
                         find = True
                 if find is True:
+                    print(os.path.join(root, name))
                     continue
                 for j in range(0,len(self.cfg_type)): 
                     if name.lower().endswith(self.cfg_type[j]):
@@ -289,8 +289,8 @@ class hodea_review_minder:
                 find = False
                 for i in range(0,len(self.cfg_exclude)):
 
-                    if os.path.join(root, name).startswith(os.path.dirname(self.cfg_exclude[i])):
-                        #print("EXCLUDE:         " + os.path.join(root, name))
+                    if os.path.join(root, name).startswith(os.path.join(self.topdir,self.cfg_exclude[i].lstrip('.'+ os.path.sep))):
+                        print("EXCLUDE:         " + os.path.join(root, name))
 
                         find = True
                 if find is True:
@@ -345,6 +345,7 @@ class hodea_review_minder:
          self.minder_dict.Setdb(self.dict)
          
     def lastreview(self):
+        print("placeholder")
         #self.dict = lastreview(self.dict, self.topdir, self.cfg_exclude, self.cfg_type)
         
         
