@@ -121,7 +121,7 @@ class rm_handle_entry:
 
     def new_entry(self, flog, rm_db, filename):
         comment = ''
-        author = ''
+        reporter = ''
         salt = uuid.uuid4().hex
         hash_object = hashlib.sha1(salt.encode('utf-8'))
         new_ID = ('RM_ID_%d___'+hash_object.hexdigest()) %len(rm_db['minder_items'])
@@ -135,34 +135,34 @@ class rm_handle_entry:
         while True:
             nextline = next(flog)
             if "*/" not in nextline:
-                if "author:" not in nextline.lower():
+                if "reporter:" not in nextline.lower():
                     comment = comment + nextline.lstrip(' ')
                 else:
-                    author = nextline.split(':')[1].strip()                     
+                    reporter = nextline.split(':')[1].strip()                     
             else:
                 break            
         p = len(rm_db['minder_items']) - 1
         
         rm_db['minder_items'][p]['comment'] = comment
-        rm_db['minder_items'][p]['author'] = author
+        rm_db['minder_items'][p]['reporter'] = reporter
         return p
 
             
     def existing_entry(self,p, flog, rm_db, filename):
         comment = ''
-        author = ''
+        reporter = ''
         while True:            
             nextline = next(flog)
             if "*/" not in nextline:
-                if "author:" not in nextline.lower():
+                if "reporter:" not in nextline.lower():
                     comment = comment + nextline.lstrip(' ')
                 else:
-                    author = nextline.split(':')[1].strip()                                        
+                    reporter = nextline.split(':')[1].strip()                                        
             else:
                 break
 
         rm_db['minder_items'][p]['comment'] = comment
-        rm_db['minder_items'][p]['author'] = author
+        rm_db['minder_items'][p]['reporter'] = reporter
         rm_db['minder_items'][p]['status'] = self.status
         rm_db['minder_items'][p]['severity'] = self.severity
         
@@ -319,8 +319,8 @@ class hodea_review_minder:
                                         self.dict['minder_items'][p]['status'] + ':' +\
                                         self.dict['minder_items'][p]['severity'] + ':' +\
                                         self.dict['minder_items'][p]['ID'] + '\n' + \
-                                        'Author:' +\
-                                        self.dict['minder_items'][p]['author'] + '\n' + \
+                                        'Reporter:' +\
+                                        self.dict['minder_items'][p]['reporter'] + '\n' + \
                                         self.dict['minder_items'][p]['comment'] + '*/\n' 
                                 else:
                                     self.dict['minder_items'][p]['closedate'] = time.strftime("%d/%m/%Y")
